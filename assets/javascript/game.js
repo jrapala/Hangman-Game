@@ -25,44 +25,41 @@ console.log(randomWord);									// Debug
 console.log(randomWord.length);								// Debug
 
 // Turn word into list of characters
-var letterList = randomWord.split('');			// Turn word into list of letters
+var letterList = randomWord.split('');						// Turn word into list of letters
 console.log(letterList);									// Debug
 console.log(letterList.length);								// Debug
 
 // Build unsolved gameboard
 var gameboard = [];										
-var guessesAllowed = 0;									
+var guessesAllowed = 0;	
+var letterFound = false;								
 
 for (char in letterList) {
 	if (char !== " ") {	
-		gameboard.push("_");							// Replace letter with underscore + space
+		gameboard.push("_");								// Replace letter with underscore + space
 		guessesAllowed++;									// Guesses allowed same as number of letters in word
 	} else {
-		gameboard.push(" ");							// Replace space with space
+		gameboard.push(" ");								// Replace space with space
 	}
 }
 
-console.log(gameboard);									// Debug
+console.log(gameboard);										// Debug
 
 // Listen for user input
+var guess = prompt("Guess a letter!").toUpperCase();		
 
-
-// Register guessed letter
-var guess = "a";										// Debug
-var letterFound = false;
-
+// Register guessed letter								
 for (var i = 0; i<letterList.length; i++) {	
 	if (letterList[i] === guess) {
-		gameboard[i] = guess;							// Replace underscore with letter if guesseed correctly
+		gameboard[i] = guess;								// Replace underscore with letter if guesseed correctly
 		letterFound = true;
-		return gameboard;
 	} 
 }
 
 if (letterFound === false) {
 	guessesAllowed -= 1;
 } else {
-	letterFound = true;
+	letterFound = false;
 }
 
 console.log("Guesses left: " + guessesAllowed);
