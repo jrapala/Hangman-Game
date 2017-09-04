@@ -14,85 +14,88 @@
 // Guessing Correct --> Display Artist and Song Title --> Change Picture --> Play Song
 // Run out of turns --> Game Over
 
+
+// Global Variables 
+// ===========================================
+
 // List of words
 var words = ["Black Sabbath", "Manowar", "Iron Maiden", "Slayer", "Metallica", "Pantera", "Judas Priest", "Megadeth", "Death", "Motorhead", "Carcass", "Cannibal Corpse", "Anthrax", "Sepultura", "Dio", "Mercyful Fate", "Morbid Angel", "Meshuggah", "Opeth", "Testament", "At The Gates", "ACDC", "Celtic Frost", "Ozzy Osbourne", "Napalm Death", "Lamb of God", "Death", "Gojira", "Tool"];
+var randomWord = "";											// Word to guess (can includes spaces)
+var letterList = [];											// Word split into array of characters
+var guessesLeft = 0;											// Number of guess (equal to number of letters in word)
+var lettersRemaining = 0;										// Number of letters remaining to guess
+var gameboard = [];												// Gameboard array
 
-// Pick random word
-var listLength = words.length;   							// Find length of word list
-var randomNumber = Math.floor(Math.random()* listLength);	// Find random number between 0 and length of word list
-var randomWord = words[randomNumber].toUpperCase();			// Choose word using the random number as an index
-console.log(randomWord);									// Debug
-console.log(randomWord.length);								// Debug
+// Functions
+// ===========================================
 
-// Turn word into list of characters
-var letterList = randomWord.split('');						// Turn word into list of letters
-console.log(letterList);									// Debug
-console.log(letterList.length);								// Debug
+// Start a new game
+function initializeGame() {
+	// Clear console
+	console.clear();
 
-// Build unsolved gameboard
-var gameboard = [];										
-var guessesAllowed = 0;	
-var letterFound = false;								
+	// Pick random word
+	var listLength = words.length;   							// Find length of word list
+	var randomNumber = Math.floor(Math.random()* listLength);	// Find random number between 0 and length of word list
+	randomWord = words[randomNumber].toUpperCase();				// Choose word using the random number as an index
+	randomWord = "TOOL"	;										// Debug
+	console.log("Random word: " + randomWord);					// Debug
 
-for (char in letterList) {
-	if (char !== " ") {	
-		gameboard.push("_");								// Replace letter with underscore + space
-		guessesAllowed++;									// Guesses allowed same as number of letters in word
-	} else {
-		gameboard.push(" ");								// Replace space with space
+	// Turn word into list of characters
+	letterList = randomWord.split('');							// Turn word into list of letters
+
+	// Build unsolved gameboard	
+	for (i in letterList) {
+		if (letterList[i] !== " ") {	
+			gameboard.push("_");								// Replace letter with underscore + space
+			guessesLeft++;
+			lettersRemaining++;
+		} else {
+			gameboard.push(" ");								// Replace space with space instead of underscore
+		}
 	}
 }
 
-console.log(gameboard);										// Debug
-
-// Listen for user input
-var guess = prompt("Guess a letter!").toUpperCase();		
-
-// Register guessed letter								
-for (var i = 0; i<letterList.length; i++) {	
-	if (letterList[i] === guess) {
-		gameboard[i] = guess;								// Replace underscore with letter if guesseed correctly
-		letterFound = true;
-	} 
+// Process guessed letter
+function guess(letter) {
+	if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(letter)) {		// Make sure guess is in the alphabet
+		if (letterList.indexOf(letter) === -1) {			
+			console.log("Letter not in word");
+			guessesLeft--;										// Decrease guesses if letter not in word
+			console.log("Guess left: " + guessesLeft);
+		} else {
+			for (var i = 0; i<letterList.length; i++) {			// If letter in word..
+				if (letterList[i] === letter) {
+					gameboard[i] = letter;						// Replace underscore with the letter
+					console.log(gameboard);
+					lettersRemaining--;							// Decrease number of letters remaining
+				}
+			}
+		}
+	}
 }
 
-if (letterFound === false) {
-	guessesAllowed -= 1;
-} else {
-	letterFound = false;
+// Check for win or lose
+function checkWin() {
+	if (lettersRemaining === 0) {								// If no more letters left to guess, you win!
+		console.log("You win!");
+	} else if (guessesLeft === 0) {								// If no more guesses left, you lose!
+		console.log("You lose!");
+		console.log("The word was: " + randomWord);				// Display answer
+	}
 }
 
-console.log("Guesses left: " + guessesAllowed);
-console.log(gameboard);
+// Gameplay
+// ===========================================
+initializeGame();
+
+document.onkeyup = function(event) {
+		var letterGuessed = String.fromCharCode(event.keyCode).toUpperCase();
+		guess(letterGuessed);
+		checkWin();
+	}
 
 
-////////////// Unneeded code? //////////////////////
-
-// Build blank gameboard for UI
-//var uiGameboard = "";											// Create blank gameboard
-//
-//for (var char in letterList) {					
-//	if (letterList[char] === " ") {							// If character in the word is a space, add a space.
-//		uiGameboard += " ";
-//	} else {
-//		uiGameboard += "_ ";									// If character in the word is a letter, add a "_" and a space.
-//	}					
-// }
-//
-// uiGameboard = uiGameboard.substring(0, uiGmeboard.length-1);		// Remove last space from gameboard
-//
-// console.log(uiGameboard);										// Debug
-// console.log(uiGameboard.length);								// Debug
 
 
-// Build solved gameboard
-//solvedGameboard = [];
-//
-//for (char in letterList) {
-//	if (letterList[char] !== " ") {	
-//		solvedGameboard.push(letterList[char].toUpperCase());		
-//	} else {
-//		solvedGameboard.push(" ");
-//}
-//
-//console.log(solvedGameboard);	
+
