@@ -29,7 +29,6 @@
   				<div class="row">
   					<div class="col-md-12 text-center">
   						<img src="assets/images/hangmanlogo.png" class="responsive-img" alt="Hangman Logo"/>
-  						hangmansubtitle.png
   					</div>
   				</div>
   				<div class="row">
@@ -44,18 +43,26 @@
 		========================================== -->
 		<main class="container">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-12 text-center headline">
+					<p><span id="alert"></span></p>
+				</div>
+			</div>
+		</main>
+		<main class="container">
+			<div class="row">
+				<div class="col-md-6 text-center">
+					<p><span id="alert"></span></p>
 				</div>
 				<div class="col-md-6 text-center">
 					<p>Press any key to get started!</p>
-					<p>Wins</p>
-					<p><br></p>
-					<p>Current Word</p>
-					<p><br></p>
-					<p>Number of Guesses Remaining</p>
-					<p><br></p>
-					<p>Letters Already Guessed</p>
-					<p><br></p>
+					<p>Wins:</p>
+					<p><span id="wins"></p>
+					<p>Current Word:</p>
+					<p><span id="gameboard"></p>
+					<p>Number of Guesses Remaining:</p>
+					<p><span id="guessesLeft"></p>
+					<p>Letters Already Guessed:</p>
+					<p><span id="lettersGuessed"></p>
 				</div>
 			</div>
 		</main>

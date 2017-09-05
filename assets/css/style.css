@@ -7,9 +7,10 @@ body {
 }
 
 main {
-	margin-bottom: 200px;
-	margin-top: 20px;
+	margin-bottom: 80px;
 }
+
+
 p {
 	color: #b8b4b4;
 	font-size: 24px;
@@ -20,3 +21,10 @@ footer {
 	background-color: #152020;
 	color: #b8b4b4;
 	padding-top: 10px;
+}
+
+.headline p {
+	margin-top: 0px;
+	color: red;
+	height: 40px;
+}
