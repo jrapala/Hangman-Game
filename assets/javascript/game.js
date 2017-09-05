@@ -1,11 +1,9 @@
 // To Do:
 // 
-// If letter guessed multiple times, only display once, only take off one guess
-// If multiple letters in word, display only one letter in "Letters Already Guessed"
-// 
-// 
-// Guessing Correct --> Display "You win!" & Display Artist and Song Title on top --> Play YouTube Video
-// Run out of turns --> Display "Game Over!""
+// Add side image
+// Generate list of YouTube Videos
+// Add sound effect for correct guess
+// Add sound effect for incorrect guess
 
 
 // Global Variables 
@@ -22,6 +20,7 @@ var gameboard = [];												// Gameboard array
 var wins = 0;													// Number of wins
 var lettersGuessed = [];										// Letters guessed
 
+
 // Functions
 // =====================================================================================
 
@@ -29,6 +28,7 @@ var lettersGuessed = [];										// Letters guessed
 function initializeGame() {
 	// Clear console
 	console.clear();
+	document.getElementById("video").innerHTML = "";			// Hide video
 
 	// Pick random word
 	var randomNumber = Math.floor(Math.random()* listLength);	// Find random number between 0 and length of word list
@@ -116,10 +116,17 @@ function guess(letter) {
 // Check for win or lose
 function checkWin() {
 	if (lettersRemaining === 0) {								// If no more letters left to guess, you win!
-		document.getElementById("alert").innerHTML = "You win!";
+		var giftTitle = "Tool - Schism";
+		document.getElementById("alert").innerHTML = "You win!<br>" + giftTitle + "<br>Press &lt;space&gt; to start next game";
 		wins++;
 		document.getElementById("wins").innerHTML = wins;
-		initializeGame();
+		document.getElementById("video").innerHTML = videos[randomWord];	// Grab video embed text from videos.js
+		document.body.onkeyup = function(e){
+    		if(e.keyCode == 32){								// Hit space bar to begin next round
+        		initializeGame();
+    		}
+		}
+
 	} else if (guessesLeft === 0) {								// If no more guesses left, you lose!
 		var lose = "Sorry! You lose!<br>The word was: " + randomWord;
 		document.getElementById("alert").innerHTML = lose;
