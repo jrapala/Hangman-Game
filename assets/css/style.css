@@ -2,15 +2,6 @@ body {
 	background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)) ,url("../images/metalbg.jpg");
 }
 
-.subtitle {
-	margin-top: -120px;
-}
-
-main {
-	margin-bottom: 80px;
-}
-
-
 p {
 	color: #b8b4b4;
 	font-size: 24px;
@@ -23,8 +14,22 @@ footer {
 	padding-top: 10px;
 }
 
-.headline p {
-	margin-top: 0px;
-	color: red;
-	height: 40px;
+.subtitle {
+	margin-top: -120px;
 }
+
+.headline p {
+	margin-bottom: 80px;
+	color: #920505;
+	height: 40px;
+	font-size: 30px;
+}
+
+.videoPanel {
+	margin-top: 40px;
+}
+
+.panelText {
+	margin-bottom: 60px;
+}
+
