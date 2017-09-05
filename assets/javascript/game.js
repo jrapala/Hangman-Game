@@ -1,12 +1,8 @@
 // To Do:
 // 
-// Add side image
-// Add correct winning artist - song text
-// Generate list of YouTube Videos
-// Add sound effect for correct guess
-// Add sound effect for incorrect guess
-// Stop additional wins after won game
-// Test if videos work
+// Add side image?
+// 
+// Fix broken videos
 
 
 
@@ -15,6 +11,7 @@
 
 // List of words
 var words = ["Black Sabbath", "Manowar", "Iron Maiden", "Slayer", "Metallica", "Pantera", "Judas Priest", "Megadeth", "Death", "Motorhead", "Carcass", "Cannibal Corpse", "Anthrax", "Sepultura", "Dio", "Mercyful Fate", "Morbid Angel", "Meshuggah", "Opeth", "Testament", "At The Gates", "ACDC", "Celtic Frost", "Ozzy Osbourne", "Napalm Death", "Lamb of God", "Gojira", "Tool"];
+var wordsDebug = ["IRON MAIDEN", "SLAYER", "PANTERA", "JUDAS PRIEST", "MEGADETH","ANTHRAX", "SEPULTURA", "DIO", "OPETH", "ACDC", "CELTIC FROST", "GOJIRA"];
 var listLength = words.length;   								// Find length of word list
 var randomWord = "";											// Word to guess (can includes spaces)
 var letterList = [];											// Word split into array of characters
@@ -37,8 +34,6 @@ function initializeGame() {
 	// Pick random word
 	var randomNumber = Math.floor(Math.random()* listLength);	// Find random number between 0 and length of word list
 	randomWord = words[randomNumber].toUpperCase();				// Choose word using the random number as an index, make uppercase
-	//randomWord = "TOOL"	;										// Debug
-	console.log("Random word: " + randomWord);					// Debug
 	lettersGuessed = [];										// Reset "Letters Already Guessed:"
 	guessesLeft = 0;											// Reset "Guesses Left:"
 	gameboard = [];												// Reset "Current Word:"
@@ -46,47 +41,44 @@ function initializeGame() {
 	lettersRemaining = 0;										// Reset letters remaining
 
 	// Turn word into list of characters
-	letterList = randomWord.split('');							// Turn word into list of letters
+	letterList = randomWord.split('');							
 
 	// Build unsolved gameboard	
 	for (i in letterList) {
 		if (letterList[i] !== " ") {	
 			gameboard.push("_");								// Replace letter with underscore
-			guessesLeft++;
-			lettersRemaining++;
-			console.log(gameboard);
+			guessesLeft++;										// Guesses equal number of letters in word
+			lettersRemaining++;									// Total number of letters in word
 		} else {
 			gameboard.push("<br>");								// Replace space with space instead of underscore
 		}
 	}
 
-	document.getElementById("wins").innerHTML = wins;
-	document.getElementById("gameboard").innerHTML = gameboard.join(" ");
-	document.getElementById("guessesLeft").innerHTML = guessesLeft;
+	document.getElementById("wins").innerHTML = wins;							// Display win counter
+	document.getElementById("gameboard").innerHTML = gameboard.join(" ");		// Display gameboard
+	document.getElementById("guessesLeft").innerHTML = guessesLeft;				// Display guesses
 }
 
 // Check if guessed letter is valid
 function check(letter) {
 	document.getElementById("alert").innerHTML = "";			// Clear alert message
-	if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(letter)) {		// Check if a letter in the alphabet
-		if (lettersGuessed.indexOf(letter) === -1) {			
-				lettersGuessed.push(letter);
+	if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".includes(letter)) {		// Check if guess is a letter in the alphabet
+		if (lettersGuessed.indexOf(letter) === -1) {			// If letter not previously guess..
+				lettersGuessed.push(letter);					// Add letter to "Letters Guessed"
 				document.getElementById("lettersGuessed").innerHTML = lettersGuessed.join(" ");
-				guess(letter);
+				guess(letter);									// Check if guessed letter is in word
 		} else {
-				document.getElementById("alert").innerHTML = "Letter already guessed. Please try a different letter.";		// Alert
+				document.getElementById("alert").innerHTML = "Letter already guessed. Please try a different letter.";		// Alert if letter already guessed
 		}
 	} else {
-			document.getElementById("alert").innerHTML = "Please enter a letter.";		// Alert
-			letterGuessed = String.fromCharCode(event.keyCode).toUpperCase();		// Guess not a letter. Try again.
+			document.getElementById("alert").innerHTML = "Please enter a letter.";		// Alert if user did not guess a letter.
+			letterGuessed = String.fromCharCode(event.keyCode).toUpperCase();			// Allow user to try again.
 	}	
 }
 
 // Check if guessed letter in word
 function guess(letter) {
-
 	var letterInWord = null;
-
 
 	for (var j = 0; j<letterList.length; j++) {				// Is letter in word?
 		if (letterList[j] === letter) {
@@ -98,45 +90,36 @@ function guess(letter) {
 		for (var k = 0; k<letterList.length; k++) {			// If letter in word..
 			if (letterList[k] === letter) {
 				gameboard[k] = letter;						// Replace underscore with the letter
-				console.log(gameboard);
 				document.getElementById("gameboard").innerHTML = gameboard.join(" ");
 				lettersRemaining--;							// Decrease number of letters remaining
-	
 			}
 		}
 	} else {
-		console.log("Letter not in word");					// If letter not in word..
-		guessesLeft--;										// Lose a guess
-		console.log("Guesses left: " + guessesLeft);
+		guessesLeft--;										// If letter not in word, lose a guess
 		document.getElementById("guessesLeft").innerHTML = guessesLeft;
-
 	}
-
-
-
 }
 
-
-// Check for win or lose
+// Check if win or loss occurs after a guess
 function checkWin() {
 	if (lettersRemaining === 0) {								// If no more letters left to guess, you win!
-		var giftTitle = randomWord + " - " + titles[randomWord];
-		document.getElementById("alert").innerHTML = "You win!<br>" + giftTitle + "<br>Press &lt;space&gt; to start next game";
-		wins++;
-		document.getElementById("wins").innerHTML = wins;
+		var giftTitle = randomWord + " - " + titles[randomWord];	// Alert with "You win!" and artist & song title.
+		document.getElementById("alert").innerHTML = "You win!<br>" + giftTitle + "<br>Press &lt;space&gt; to start next game";													
+		// Play video of song
 		document.getElementById("video").innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + videos[randomWord] + '?autoplay=1" frameborder="0" allowfullscreen></iframe>';	// Grab video embed text from videos.js
 		document.body.onkeyup = function(e){
     		if(e.keyCode == 32){								// Hit space bar to begin next round
-        		initializeGame();
+    			wins++;											// Increase wins counter
+        		initializeGame();								// Restart game
     		} else {
-    			e.preventDefault();
+    			return false;
     		}
 		}
 
 	} else if (guessesLeft === 0) {								// If no more guesses left, you lose!
 		var lose = "Sorry! You lose!<br>The word was: " + randomWord;
 		document.getElementById("alert").innerHTML = lose;
-		initializeGame();
+		initializeGame();										// Restart game
 	}
 }
 
@@ -150,9 +133,4 @@ document.onkeyup = function(event) {
 	check(letterGuessed);													
 	checkWin();
 	}
-
-
-
-
-
 
