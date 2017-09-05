@@ -2,7 +2,7 @@
 // 
 // Add side image?
 // 
-// Fix broken videos
+// 
 
 
 
@@ -11,7 +11,6 @@
 
 // List of words
 var words = ["Black Sabbath", "Manowar", "Iron Maiden", "Slayer", "Metallica", "Pantera", "Judas Priest", "Megadeth", "Death", "Motorhead", "Carcass", "Cannibal Corpse", "Anthrax", "Sepultura", "Dio", "Mercyful Fate", "Morbid Angel", "Meshuggah", "Opeth", "Testament", "At The Gates", "ACDC", "Celtic Frost", "Ozzy Osbourne", "Napalm Death", "Lamb of God", "Gojira", "Tool"];
-var wordsDebug = ["IRON MAIDEN", "SLAYER", "PANTERA", "JUDAS PRIEST", "MEGADETH","ANTHRAX", "SEPULTURA", "DIO", "OPETH", "ACDC", "CELTIC FROST", "GOJIRA"];
 var listLength = words.length;   								// Find length of word list
 var randomWord = "";											// Word to guess (can includes spaces)
 var letterList = [];											// Word split into array of characters
@@ -98,6 +97,11 @@ function guess(letter) {
 		guessesLeft--;										// If letter not in word, lose a guess
 		document.getElementById("guessesLeft").innerHTML = guessesLeft;
 	}
+
+	if (lettersRemaining === 0) {	
+		wins++;												// Increase wins counter (must occur before checkWin() loop to increment only once)
+		document.getElementById("wins").innerHTML = wins;	// Update wins counts
+	}
 }
 
 // Check if win or loss occurs after a guess
@@ -109,11 +113,8 @@ function checkWin() {
 		document.getElementById("video").innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/embed/' + videos[randomWord] + '?autoplay=1" frameborder="0" allowfullscreen></iframe>';	// Grab video embed text from videos.js
 		document.body.onkeyup = function(e){
     		if(e.keyCode == 32){								// Hit space bar to begin next round
-    			wins++;											// Increase wins counter
         		initializeGame();								// Restart game
-    		} else {
-    			return false;
-    		}
+    		} 
 		}
 
 	} else if (guessesLeft === 0) {								// If no more guesses left, you lose!
