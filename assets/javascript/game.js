@@ -101,6 +101,7 @@ function guess(letter) {
 	if (lettersRemaining === 0) {	
 		wins++;												// Increase wins counter (must occur before checkWin() loop to increment only once)
 		document.getElementById("wins").innerHTML = wins;	// Update wins counts
+		document.getElementById("lettersGuessed").innerHTML = "";		// Hides letters guessed after a win
 	}
 }
 
@@ -120,6 +121,7 @@ function checkWin() {
 	} else if (guessesLeft === 0) {								// If no more guesses left, you lose!
 		var lose = "Sorry! You lose!<br>The word was: " + randomWord;
 		document.getElementById("alert").innerHTML = lose;
+		document.getElementById("lettersGuessed").innerHTML = "";		// Hides letters guessed after a win
 		initializeGame();										// Restart game
 	}
 }
