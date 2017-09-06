@@ -6,6 +6,8 @@ p {
 	color: #b8b4b4;
 	font-size: 24px;
 	font-family: 'Metal Mania', cursive;
+	text-shadow: 2px 2px 8px #000000;
+	letter-spacing: .04em;
 }
 
 footer {
@@ -14,15 +16,21 @@ footer {
 	padding-top: 10px;
 }
 
+footer p {
+	font-size: 20px;
+}
+
 .subtitle {
 	margin-top: -120px;
 }
 
 .headline p {
 	margin-bottom: 80px;
-	color: #920505;
+	color: #ec1919;
 	height: 40px;
 	font-size: 30px;
+	text-shadow: 0px 0px 100px #000;
+	letter-spacing: .1em;
 }
 
 .videoPanel {
@@ -30,6 +38,6 @@ footer {
 }
 
 .panelText {
-	margin-bottom: 60px;
+	margin-bottom: 120px;
 }
 
