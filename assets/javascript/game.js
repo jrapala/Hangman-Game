@@ -11,7 +11,6 @@
 	var randomWord = "";											
 	var letterList = [];											// Array to hold letters of word
 	var lettersRemaining = 0;										// Number of letters remaining to guess
-	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	// Game Panel
 	var wins = 0;													// Number of wins
@@ -19,7 +18,8 @@
 	var guessesLeft = 0;											// Number of guesses (equal to number of letters in word)
 	var lettersGuessed = [];										// Letters guessed
 
-
+	// Misc variables
+	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 // Functions
 // =====================================================================================
@@ -35,11 +35,10 @@
 		letterList = randomWord.split('');							
 		
 		// Reset game panel
-		lettersGuessed = [];										// Reset "Letters Already Guessed:"
-		guessesLeft = 0;											// Reset "Guesses Left:"
 		gameboard = [];												// Reset "Current Word:"
-		guessesLeft = 0;											// Reset guesses left
 		lettersRemaining = 0;										// Reset letters remaining
+		guessesLeft = 0;											// Reset "Guesses Left:"
+		lettersGuessed = [];										// Reset "Letters Already Guessed:"
 
 		// Build unsolved gameboard	
 		for (i in letterList) {
@@ -61,12 +60,12 @@
 
 	// Check if guessed letter is valid
 	function check(letter) {
-		document.getElementById("alert").innerHTML = "";							// Clear alert message
-		if (alphabet.includes(letter)) {						// Check if guess is a letter in the alphabet
-			if (lettersGuessed.indexOf(letter) === -1) {							// If letter not previously guess..
-					lettersGuessed.push(letter);									// Add letter to "Letters Guessed"
+		document.getElementById("alert").innerHTML = "";									// Clear alert message
+		if (alphabet.includes(letter)) {													// Check if guess is a letter in the alphabet
+			if (lettersGuessed.indexOf(letter) === -1) {									// If letter not previously guess..
+					lettersGuessed.push(letter);											// Add letter to "Letters Guessed"
 					document.getElementById("lettersGuessed").innerHTML = lettersGuessed.join(" ");
-					guess(letter);													// Check if guessed letter is in word
+					guess(letter);															// Check if guessed letter is in word
 			} else {
 					document.getElementById("alert").innerHTML = "Letter already guessed. Please try a different letter.";		// Alert if letter already guessed
 			}
@@ -78,6 +77,7 @@
 
 	// Check if guessed letter is in the mystery word.
 	function guess(letter) {
+
 		// Reset
 		var letterInWord = null;
 
@@ -97,7 +97,6 @@
 					lettersRemaining--;									
 				}
 			}
-
 		// If guessed letter is not in the mystery word, lose a guess.
 		} else {
 			// If/else statement prevents guess counter from going below zero
@@ -109,10 +108,10 @@
 			document.getElementById("guessesLeft").innerHTML = guessesLeft;
 		}
 
-		// If all letters in the mystery word are guessed, add a win.
+		// If all letters in the mystery word are guessed, add a win. Keep outside of checkWin() loop to prevent multiple win increments.
 		if (lettersRemaining === 0) {													
 			wins++;	
-			// Needed to fix bug of wins incrementing if more letters guessed.
+			// Add all unguessed letters to prevent multiple win increments.
 			for (var i = 0; i<alphabet.length; i++) {	
 				if (!lettersGuessed.includes(alphabet[i])) {
       			lettersGuessed.push(alphabet[i]);
@@ -125,7 +124,7 @@
 	function checkWin() {
 		// If no more letters left to guess, you win!
 		if (lettersRemaining === 0) {																			
-			document.getElementById("wins").innerHTML = wins;				// Update wins counts
+			document.getElementById("wins").innerHTML = wins;				// Update win count
 			document.getElementById("lettersGuessed").innerHTML = "";		// Hides letters guessed after a win
 			var giftTitle = randomWord + " - " + titles[randomWord];		// Alert with "You win!" and artist & song title.
 			document.getElementById("alert").innerHTML = "You win!<br>" + giftTitle + "<br>Press &lt;enter&gt; to start next game";													
